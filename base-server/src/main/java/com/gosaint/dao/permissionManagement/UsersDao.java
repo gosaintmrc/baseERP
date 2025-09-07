@@ -1,6 +1,7 @@
 package com.gosaint.dao.permissionManagement;
 
 import com.gosaint.model.permissionManagement.Users;
+import com.gosaint.model.vo.UsersVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -19,6 +20,8 @@ public interface UsersDao {
 
     // 查询所有用户
     List<Users> selectAll();
+
+    List<UsersVO> selectAndRolesAll();
 
     // 更新用户
     int update(Users user);

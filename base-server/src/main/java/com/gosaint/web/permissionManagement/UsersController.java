@@ -2,6 +2,7 @@ package com.gosaint.web.permissionManagement;
 
 import com.github.pagehelper.PageInfo;
 import com.gosaint.model.permissionManagement.Users;
+import com.gosaint.model.vo.UsersVO;
 import com.gosaint.service.permissionManagement.UsersService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 @Slf4j
 @CrossOrigin
 @RestController
@@ -26,7 +25,8 @@ public class UsersController {
     @Operation(summary = "创建用户", description = "添加新用户到系统")
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Integer> createUser(@RequestBody Users user) {
+    public ResponseEntity<Integer> createUser(@RequestBody UsersVO user) {
+        log.info("新增用户对象：{}",user);
         int result = usersService.createUser(user);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
@@ -39,12 +39,12 @@ public class UsersController {
         return ResponseEntity.ok(user);
     }
 
-    @Operation(summary = "获取所有用户", description = "查询系统中的所有用户列表")
+    @Operation(summary = "分页获取所有用户", description = "分页查询系统中的所有用户列表")
     @GetMapping
-   // @PreAuthorize("hasRole('ADMIN')") //TODO 权限控制
-    public ResponseEntity<PageInfo<Users>> getAllUsers(int pageNum,int pageSize) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<PageInfo<UsersVO>> getAllUsersAndRoles(int pageNum, int pageSize) {
         log.debug("获取所有用户start------");
-        PageInfo<Users> page = usersService.getAllUsersByPage(pageNum, pageSize);
+        PageInfo<UsersVO> page = usersService.getAllUsersAndRoles(pageNum, pageSize);
         return ResponseEntity.ok(page);
     }
 

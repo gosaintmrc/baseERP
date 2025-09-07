@@ -37,11 +37,18 @@ public class RolesController {
         return ResponseEntity.ok(role);
     }
 
-    @Operation(summary = "获取所有角色", description = "查询系统中的所有角色列表")
+    @Operation(summary = "分页获取所有角色", description = "分页查询系统中的所有角色列表")
     @GetMapping
-   // @PreAuthorize("hasRole('ADMIN')") //TODO
-    public ResponseEntity<PageInfo<Roles>> getAllRoles(int pageNum, int pageSize) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<PageInfo<Roles>> getAllRolesByPages(int pageNum, int pageSize) {
         return ResponseEntity.ok(rolesService.getAllRolesByPage(pageNum,pageSize));
+    }
+
+    @Operation(summary = "获取所有角色", description = "查询系统中的所有角色列表")
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Roles>> getAllRoles() {
+        return ResponseEntity.ok(rolesService.getAllRoles());
     }
 
     @Operation(summary = "更新角色", description = "修改角色信息")

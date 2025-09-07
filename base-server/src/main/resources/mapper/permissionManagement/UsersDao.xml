@@ -50,6 +50,10 @@
         SELECT * FROM users
     </select>
 
+    <select id="selectAndRolesAll" resultType="com.gosaint.model.vo.UsersVO">
+        select u.*,r.role_name,r.role_id,r.description from users u left join user_roles ur on u.user_id =ur.user_id left join roles r on ur.role_id =r.role_id
+    </select>
+
     <!-- 更新用户 -->
     <update id="update" parameterType="com.gosaint.model.permissionManagement.Users">
         UPDATE users
